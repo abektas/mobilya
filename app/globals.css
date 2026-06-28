@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Primary: Koyu Petrol Mavisi #1F4E5F */
+    --primary: 194 51% 25%;
+    --primary-foreground: 210 40% 98%;
+
+    /* Secondary: Ceviz Kahvesi #8B5E3C */
+    --secondary: 24 40% 39%;
+    --secondary-foreground: 210 40% 98%;
+
+    /* Background: Kirik Beyaz #F8F7F5 */
+    --background: 40 17% 97%;
+    --foreground: 220 30% 16%; /* #1F2937 */
+
+    /* Card: Saf Beyaz */
+    --card: 0 0% 100%;
+    --card-foreground: 220 30% 16%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 30% 16%;
+
+    /* Muted / Acik Gri #F3F4F6 */
+    --muted: 220 14% 96%;
+    --muted-foreground: 215 16% 47%; /* #6B7280 */
+
+    /* Accent: Turuncu CTA #F97316 */
+    --accent: 24 95% 53%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 142 71% 45%;   /* #22C55E */
+    --warning: 38 92% 50%;    /* #F59E0B */
+    --info: 214 84% 56%;      /* #3B82F6 */
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 194 51% 25%;
+    --radius: 0.75rem; /* 12px */
+
+    --chart-1: 194 51% 25%;
+    --chart-2: 24 40% 39%;
+    --chart-3: 24 95% 53%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    --background: 220 30% 8%;
+    --foreground: 210 40% 98%;
+    --card: 220 30% 12%;
+    --card-foreground: 210 40% 98%;
+    --popover: 220 30% 12%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 194 51% 35%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 24 40% 45%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 220 30% 16%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 24 95% 53%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62% 40%;
+    --destructive-foreground: 210 40% 98%;
+    --success: 142 71% 45%;
+    --warning: 38 92% 50%;
+    --info: 214 84% 56%;
+    --border: 220 30% 18%;
+    --input: 220 30% 18%;
+    --ring: 194 51% 35%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+/* ===== CUSTOM UTILITIES ===== */
+
+/* Kart golgesi */
+.shadow-card {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* Brand gradient - Petrol + Ceviz */
+.bg-brand-gradient {
+  background: linear-gradient(135deg, #1F4E5F 0%, #243447 100%);
+}
+
+/* CTA gradient - Turuncu */
+.bg-cta-gradient {
+  background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+}
+
+/* Warm gradient - Ceviz */
+.bg-warm-gradient {
+  background: linear-gradient(135deg, #8B5E3C 0%, #A0764A 100%);
+}
+
+/* Text gradient */
+.text-gradient {
+  background: linear-gradient(135deg, #1F4E5F 0%, #8B5E3C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Status colors */
+.text-success { color: #22C55E; }
+.text-warning { color: #F59E0B; }
+.text-error { color: #EF4444; }
+.text-info { color: #3B82F6; }
+
+.bg-success { background-color: #22C55E; }
+.bg-warning { background-color: #F59E0B; }
+.bg-error { background-color: #EF4444; }
+.bg-info { background-color: #3B82F6; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: hsl(var(--muted)); }
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Satici Panel - Sol Menu */
+.bg-sidebar {
+  background-color: #23395B;
+}
+
+/* Alici Panel - Acik arka plan */
+.bg-buyer {
+  background-color: #F8F7F5;
+}
+
+/* Stat kart renkleri */
+.stat-order { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+.stat-quote { background: linear-gradient(135deg, #F97316, #EA580C); }
+.stat-message { background: linear-gradient(135deg, #22C55E, #16A34A); }
+.stat-visitor { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+
