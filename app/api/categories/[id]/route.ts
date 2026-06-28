@@ -2,11 +2,14 @@ import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getAuthenticatedUser, unauthorizedResponse, errorResponse, successResponse } from '@/lib/auth'
 
-export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const { id } = await params
   try {
     const category = await prisma.category.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         parent: true,
         children: {
@@ -30,7 +33,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const { id } = await params
   try {
     const authUser = getAuthenticatedUser(request)
@@ -42,7 +48,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const { nameTr, nameEn, descriptionTr, descriptionEn, image, icon, parentId, sortOrder, published } = body
 
     const category = await prisma.category.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         ...(nameTr !== undefined && { nameTr }),
         ...(nameEn !== undefined && { nameEn }),
@@ -63,7 +69,10 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const { id } = await params
   try {
     const authUser = getAuthenticatedUser(request)
@@ -72,12 +81,12 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     }
 
     // Check if category has products
-    const productCount = await prisma.product.count({ where: { categoryId: params.id } })
+    const productCount = await prisma.product.count({ where: { categoryId: id } })
     if (productCount > 0) {
       return errorResponse(`Bu kategoride ${productCount} ürün bulunuyor. Önce ürünleri taşıyın veya silin.`)
     }
 
-    await prisma.category.delete({ where: { id: params.id } })
+    await prisma.category.delete({ where: { id: id } })
     return successResponse({ message: 'Kategori silindi' })
   } catch (error) {
     console.error('Delete category error:', error)

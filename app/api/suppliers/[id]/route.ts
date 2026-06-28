@@ -3,10 +3,11 @@ import { prisma } from '@/lib/prisma'
 import { errorResponse, successResponse } from '@/lib/auth'
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   try {
     const supplier = await prisma.user.findFirst({
       where: {
-        id: params.id,
+        id: id,
         role: 'seller',
       },
       select: {
@@ -37,7 +38,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     // Get supplier's products
     const products = await prisma.product.findMany({
       where: {
-        supplierId: params.id,
+        supplierId: id,
         published: true,
       },
       orderBy: { createdAt: 'desc' },

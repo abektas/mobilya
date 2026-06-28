@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { getAuthenticatedUser, unauthorizedResponse, errorResponse, successResponse } from '@/lib/auth'
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   try {
     const authUser = getAuthenticatedUser(request)
     if (!authUser) {
@@ -10,7 +11,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     const rfq = await prisma.rFQ.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         buyer: {
           select: { id: true, name: true, companyName: true, email: true, phone: true },
@@ -48,6 +49,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 }
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   try {
     const authUser = getAuthenticatedUser(request)
     if (!authUser) {
@@ -57,7 +59,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       return unauthorizedResponse('Teklif vermek için satıcı olmalısınız')
     }
 
-    const rfq = await prisma.rFQ.findUnique({ where: { id: params.id } })
+    const rfq = await prisma.rFQ.findUnique({ where: { id: id } })
     if (!rfq) {
       return errorResponse('Teklif talebi bulunamadı', 404)
     }
@@ -75,7 +77,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
     const quote = await prisma.quote.create({
       data: {
-        rfqId: params.id,
+        rfqId: id,
         supplierId: authUser.userId,
         price: parseFloat(price),
         currency: currency || 'TRY',
@@ -97,6 +99,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 }
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   try {
     const authUser = getAuthenticatedUser(request)
     if (!authUser) {
@@ -106,7 +109,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const body = await request.json()
     const { status } = body
 
-    const rfq = await prisma.rFQ.findUnique({ where: { id: params.id } })
+    const rfq = await prisma.rFQ.findUnique({ where: { id: id } })
     if (!rfq) {
       return errorResponse('Teklif talebi bulunamadı', 404)
     }
@@ -116,7 +119,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     const updated = await prisma.rFQ.update({
-      where: { id: params.id },
+      where: { id: id },
       data: { ...(status && { status }) },
     })
 

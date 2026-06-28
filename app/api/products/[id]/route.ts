@@ -4,9 +4,10 @@ import { getAuthenticatedUser, unauthorizedResponse, errorResponse, successRespo
 import { serializeImages } from '@/lib/utils'
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   try {
     const product = await prisma.product.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         supplier: {
           select: {
@@ -92,13 +93,14 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 }
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   try {
     const authUser = getAuthenticatedUser(request)
     if (!authUser) {
       return unauthorizedResponse()
     }
 
-    const product = await prisma.product.findUnique({ where: { id: params.id } })
+    const product = await prisma.product.findUnique({ where: { id: id } })
     if (!product) {
       return errorResponse('Ürün bulunamadı', 404)
     }
@@ -115,7 +117,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     } = body
 
     const updated = await prisma.product.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         ...(nameTr !== undefined && { nameTr }),
         ...(nameEn !== undefined && { nameEn }),
@@ -143,13 +145,14 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 }
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   try {
     const authUser = getAuthenticatedUser(request)
     if (!authUser) {
       return unauthorizedResponse()
     }
 
-    const product = await prisma.product.findUnique({ where: { id: params.id } })
+    const product = await prisma.product.findUnique({ where: { id: id } })
     if (!product) {
       return errorResponse('Ürün bulunamadı', 404)
     }
@@ -158,7 +161,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
       return unauthorizedResponse('Bu ürünü silme yetkiniz yok')
     }
 
-    await prisma.product.delete({ where: { id: params.id } })
+    await prisma.product.delete({ where: { id: id } })
     return successResponse({ message: 'Ürün silindi' })
   } catch (error) {
     console.error('Delete product error:', error)

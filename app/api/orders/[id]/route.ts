@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { getAuthenticatedUser, unauthorizedResponse, errorResponse, successResponse } from '@/lib/auth'
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   try {
     const authUser = getAuthenticatedUser(request)
     if (!authUser) {
@@ -10,7 +11,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     const order = await prisma.order.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         buyer: { select: { id: true, name: true, companyName: true, email: true, phone: true } },
         supplier: { select: { id: true, name: true, companyName: true, email: true, phone: true, city: true } },
@@ -38,13 +39,14 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 }
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   try {
     const authUser = getAuthenticatedUser(request)
     if (!authUser) {
       return unauthorizedResponse()
     }
 
-    const order = await prisma.order.findUnique({ where: { id: params.id } })
+    const order = await prisma.order.findUnique({ where: { id: id } })
     if (!order) {
       return errorResponse('Sipariş bulunamadı', 404)
     }
@@ -66,7 +68,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     const updated = await prisma.order.update({
-      where: { id: params.id },
+      where: { id: id },
       data: { status },
     })
 
