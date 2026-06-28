@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getAuthenticatedUser, unauthorizedResponse, errorResponse, successResponse } from '@/lib/auth'
+import { serializeImages } from '@/lib/utils'
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
@@ -121,7 +122,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
         ...(categoryId !== undefined && { categoryId }),
         ...(descriptionTr !== undefined && { descriptionTr }),
         ...(descriptionEn !== undefined && { descriptionEn }),
-        ...(images !== undefined && { images }),
+        ...(images !== undefined && { images: serializeImages(images) }),
         ...(price !== undefined && { price: price ? parseFloat(price) : null }),
         ...(currency !== undefined && { currency }),
         ...(minOrder !== undefined && { minOrder: parseInt(minOrder) }),

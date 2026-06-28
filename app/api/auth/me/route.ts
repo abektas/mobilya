@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
             favorites: true,
             rfqs: true,
             orders: true,
-            messages: { where: { receiverId: authUser.userId, read: false } },
+            receivedMessages: { where: { read: false } },
           },
         },
       },

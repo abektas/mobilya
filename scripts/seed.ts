@@ -1,12 +1,17 @@
 import { prisma } from '../lib/prisma'
 import { hashPassword } from '../lib/auth'
+import crypto from 'crypto'
+
+function generatePassword(): string {
+  return crypto.randomBytes(16).toString('base64url').slice(0, 20) + 'Aa1!'
+}
 
 async function seed() {
   console.log('🌱 Seed basliyor...')
 
-  // Admin hesabi
+  // Admin hesabi - sifre sadece env'den alinir, yoksa rastgele uretilir
   const adminEmail = process.env.ADMIN_EMAIL || 'admin@mobilyapazar.com'
-  const adminPassword = process.env.ADMIN_PASSWORD || 'Admin123!'
+  const adminPassword = process.env.ADMIN_PASSWORD || generatePassword()
 
   const existingAdmin = await prisma.user.findUnique({ where: { email: adminEmail } })
   if (!existingAdmin) {
@@ -23,14 +28,16 @@ async function seed() {
         verified: true,
       },
     })
-    console.log(`✅ Admin hesabi olusturuldu: ${adminEmail} / ${adminPassword}`)
+    console.log(`✅ Admin hesabi olusturuldu: ${adminEmail}`)
+    console.log(`   ⚠️  Sifre (bir kere gosterilir): ${adminPassword}`)
+    console.log(`   Bu sifreyi not alin. Bir daha goruntulenemez.`)
   } else {
     console.log(`ℹ️ Admin hesabi zaten var: ${adminEmail}`)
   }
 
-  // Ornek satici hesabi
+  // Ornek satici hesabi - rastgele sifre
   const sellerEmail = 'satici@ornek.com'
-  const sellerPassword = 'Seller123!'
+  const sellerPassword = generatePassword()
 
   const existingSeller = await prisma.user.findUnique({ where: { email: sellerEmail } })
   if (!existingSeller) {
@@ -44,18 +51,19 @@ async function seed() {
         companyName: 'Mobilya Sanayi A.S.',
         phone: '+90 555 111 22 33',
         city: 'Bursa',
-        about: '20 yillik mobilya ureticisi. En kaliteli urunleri en uygun fiyata sunuyoruz.',
+        about: '20 yillik mobilya ureticisi.',
         founded: 2005,
         employeeCount: 50,
         verified: true,
       },
     })
-    console.log(`✅ Ornek satici hesabi olusturuldu: ${sellerEmail} / ${sellerPassword}`)
+    console.log(`✅ Ornek satici hesabi olusturuldu: ${sellerEmail}`)
+    console.log(`   ⚠️  Sifre: ${sellerPassword}`)
   }
 
-  // Ornek alici hesabi
+  // Ornek alici hesabi - rastgele sifre
   const buyerEmail = 'alici@ornek.com'
-  const buyerPassword = 'Buyer123!'
+  const buyerPassword = generatePassword()
 
   const existingBuyer = await prisma.user.findUnique({ where: { email: buyerEmail } })
   if (!existingBuyer) {
@@ -71,10 +79,11 @@ async function seed() {
         city: 'Ankara',
       },
     })
-    console.log(`✅ Ornek alici hesabi olusturuldu: ${buyerEmail} / ${buyerPassword}`)
+    console.log(`✅ Ornek alici hesabi olusturuldu: ${buyerEmail}`)
+    console.log(`   ⚠️  Sifre: ${buyerPassword}`)
   }
 
-  // Ornek kategoriler
+  // Kategoriler
   const categoryData = [
     { nameTr: 'Oturma Odasi', nameEn: 'Living Room', slug: 'oturma-odasi', sortOrder: 1 },
     { nameTr: 'Yatak Odasi', nameEn: 'Bedroom', slug: 'yatak-odasi', sortOrder: 2 },
@@ -97,11 +106,6 @@ async function seed() {
   }
 
   console.log('🎉 Seed tamamlandi!')
-  console.log('')
-  console.log('📋 Hesap Bilgileri:')
-  console.log('   Admin: admin@mobilyapazar.com / Admin123!')
-  console.log('   Satici: satici@ornek.com / Seller123!')
-  console.log('   Alici: alici@ornek.com / Buyer123!')
 }
 
 seed()

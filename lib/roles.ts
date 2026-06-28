@@ -52,6 +52,9 @@ const rolePermissions: Record<UserRole, RolePermissions> = {
     canManageSiteContent: true, canViewDashboard: true, canViewAdminPanel: true,
     canManageAllOrders: true, canManageAllProducts: true, canManageAllRFQs: true,
     canViewAnalytics: true, canVerifySuppliers: true,
+    canContactSupplier: true, canReviewProducts: true, canAddFavorites: true,
+  },
+}
 
 export const roleLabels: Record<UserRole, string> = {
   buyer: 'Alıcı',
@@ -128,6 +131,4 @@ export function hasAnyPermission(role: UserRole, permissions: (keyof RolePermiss
   return permissions.some(p => hasPermission(role, p))
 }
 
-    canContactSupplier: true, canReviewProducts: true, canAddFavorites: true,
-  },
-}
+

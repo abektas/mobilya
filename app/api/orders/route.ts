@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getAuthenticatedUser, unauthorizedResponse, errorResponse, successResponse } from '@/lib/auth'
+import { serializeImages } from '@/lib/utils'
 
 export async function GET(request: NextRequest) {
   try {
@@ -108,6 +109,14 @@ export async function POST(request: NextRequest) {
         supplier: { select: { id: true, name: true, companyName: true } },
       },
     })
+
+    // Stoktan dus
+    for (const item of items) {
+      await prisma.product.update({
+        where: { id: item.productId },
+        data: { stock: { decrement: item.quantity } },
+      })
+    }
 
     return successResponse({ order }, 201)
   } catch (error) {

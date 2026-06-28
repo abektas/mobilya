@@ -5,6 +5,29 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+// ============================================================
+// Product.images yardimci fonksiyonlari
+// SQLite dizi desteklemedigi icin images JSON string olarak saklanir.
+// Uretimde PostgreSQL'e gecildiginde bu fonksiyonlar kaldirilip
+// dogrudan String[] kullanilabilir.
+// ============================================================
+
+export function serializeImages(images: string[]): string {
+  if (!images || !Array.isArray(images)) return '[]'
+  return JSON.stringify(images)
+}
+
+export function parseImages(images: string | string[]): string[] {
+  if (!images) return []
+  if (Array.isArray(images)) return images
+  try {
+    const parsed = JSON.parse(images)
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
 export function formatPrice(price: number, currency: string = 'TRY'): string {
   return new Intl.NumberFormat('tr-TR', {
     style: 'currency',

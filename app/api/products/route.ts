@@ -1,7 +1,11 @@
 import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getAuthenticatedUser, unauthorizedResponse, errorResponse, successResponse } from '@/lib/auth'
-import { slugify } from '@/lib/utils'
+import { slugify, serializeImages, parseImages } from '@/lib/utils'
+
+// NOT: SQLite kullaniminda contains case-insensitive calisir.
+// Uretimde PostgreSQL'e gecince mode: 'insensitive' eklenebilir veya
+// pg_trgm extension ile ILIKE kullanilabilir.
 
 export async function GET(request: NextRequest) {
   try {
@@ -24,10 +28,10 @@ export async function GET(request: NextRequest) {
 
     if (search) {
       where.OR = [
-        { nameTr: { contains: search, mode: 'insensitive' } },
-        { nameEn: { contains: search, mode: 'insensitive' } },
-        { descriptionTr: { contains: search, mode: 'insensitive' } },
-        { descriptionEn: { contains: search, mode: 'insensitive' } },
+        { nameTr: { contains: search } },
+        { nameEn: { contains: search } },
+        { descriptionTr: { contains: search } },
+        { descriptionEn: { contains: search } },
       ]
     }
 
@@ -159,7 +163,7 @@ export async function POST(request: NextRequest) {
         categoryId,
         descriptionTr: descriptionTr || '',
         descriptionEn: descriptionEn || '',
-        images: images || [],
+        images: serializeImages(images),
         price: price ? parseFloat(price) : null,
         currency: currency || 'TRY',
         minOrder: minOrder ? parseInt(minOrder) : 1,

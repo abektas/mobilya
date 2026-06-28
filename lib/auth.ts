@@ -145,7 +145,11 @@ export function validateSignupData(body: any): { valid: boolean; errors: string[
 
 export async function ensureAdminExists() {
   const adminEmail = process.env.ADMIN_EMAIL || 'admin@mobilyapazar.com'
-  const adminPassword = process.env.ADMIN_PASSWORD || 'Admin123!'
+  const adminPassword = process.env.ADMIN_PASSWORD
+  if (!adminPassword) {
+    console.warn('ADMIN_PASSWORD env degiskeni tanimli degil, admin hesabi olusturulamadi.')
+    return
+  }
   const existing = await prisma.user.findUnique({ where: { email: adminEmail } })
   if (!existing) {
     const hashedPw = await hashPassword(adminPassword)

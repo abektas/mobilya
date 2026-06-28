@@ -20,13 +20,34 @@ export async function GET(request: NextRequest) {
     if (authUser.role === 'buyer') {
       where.buyerId = authUser.userId
     } else if (authUser.role === 'seller') {
-      // Sellers see RFQs where they have submitted quotes
-      where.quotes = { some: { supplierId: authUser.userId } }
+      // Sellers see all open RFQs (RFQ Pazari)
+      // Also include RFQs where they already submitted quotes
+      where.OR = [
+        { status: 'open' },
+        { quotes: { some: { supplierId: authUser.userId } } },
+      ]
     } else if (authUser.role !== 'admin') {
       where.buyerId = authUser.userId
     }
 
-    if (status) where.status = status
+    // Belirli bir statu filtresi varsa, OR ile birlikte calisir
+    // Ayrica kategori filtrelemesi (opsiyonel)
+    const categoryId = searchParams.get('categoryId') || ''
+    if (categoryId) {
+      where.items = { some: { productId: categoryId } }
+    }
+
+    if (status) {
+      // Eger seller ise status filtresini OR disinda uygula
+      if (authUser.role === 'seller') {
+        where.AND = [{ OR: where.OR }]
+        delete where.OR
+        where.status = status
+        where.OR = where.AND[0].OR
+      } else {
+        where.status = status
+      }
+    }
 
     const [rfqs, total] = await Promise.all([
       prisma.rFQ.findMany({

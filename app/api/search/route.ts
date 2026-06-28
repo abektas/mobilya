@@ -20,10 +20,10 @@ export async function GET(request: NextRequest) {
         where: {
           published: true,
           OR: [
-            { nameTr: { contains: q, mode: 'insensitive' } },
-            { nameEn: { contains: q, mode: 'insensitive' } },
-            { descriptionTr: { contains: q, mode: 'insensitive' } },
-            { descriptionEn: { contains: q, mode: 'insensitive' } },
+            { nameTr: { contains: q } },
+            { nameEn: { contains: q } },
+            { descriptionTr: { contains: q } },
+            { descriptionEn: { contains: q } },
           ],
         },
         take: limit,
@@ -46,9 +46,9 @@ export async function GET(request: NextRequest) {
         where: {
           role: 'seller',
           OR: [
-            { name: { contains: q, mode: 'insensitive' } },
-            { companyName: { contains: q, mode: 'insensitive' } },
-            { city: { contains: q, mode: 'insensitive' } },
+            { name: { contains: q } },
+            { companyName: { contains: q } },
+            { city: { contains: q } },
           ],
         },
         take: limit,
@@ -69,8 +69,8 @@ export async function GET(request: NextRequest) {
         where: {
           published: true,
           OR: [
-            { nameTr: { contains: q, mode: 'insensitive' } },
-            { nameEn: { contains: q, mode: 'insensitive' } },
+            { nameTr: { contains: q } },
+            { nameEn: { contains: q } },
           ],
         },
         take: limit,

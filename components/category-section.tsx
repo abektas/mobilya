@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { 
   Sofa, Bed, UtensilsCrossed, Briefcase, 
-  Trees, Bath, Baby, Lamp, Shelf 
+  Trees, Bath, Baby, Lamp, Package 
 } from 'lucide-react'
 
 const categories = [
@@ -18,7 +18,7 @@ const categories = [
   { key: 'bathroom', icon: Bath, color: 'from-sky-500 to-blue-500', href: '/urunler?kategori=banyo-mobilyalari' },
   { key: 'children', icon: Baby, color: 'from-pink-500 to-rose-500', href: '/urunler?kategori=cocuk-mobilyalari' },
   { key: 'lighting', icon: Lamp, color: 'from-yellow-500 to-amber-500', href: '/urunler?kategori=aydinlatma' },
-  { key: 'accessories', icon: Shelf, color: 'from-gray-500 to-slate-500', href: '/urunler?kategori=mobilya-aksesuarlari' },
+  { key: 'accessories', icon: Package, color: 'from-gray-500 to-slate-500', href: '/urunler?kategori=mobilya-aksesuarlari' },
 ]
 
 export function CategorySection() {

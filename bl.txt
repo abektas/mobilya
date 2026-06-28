@@ -1,0 +1,50 @@
+  ▲ Next.js 14.2.28
+  - Environments: .env
+  - Experiments (use with caution):
+    · outputFileTracingRoot
+
+   Creating an optimized production build ...
+Failed to compile.
+
+./app/alici/panel/rfq/[id]/page.tsx
+Error: 
+  [31mx[0m Expected '{', got 'return'
+    ,-[[36;1;4mC:\Users\alibe\Desktop\mobilya\app\alici\panel\rfq\[id]\page.tsx[0m:42:1]
+ [2m42[0m | 
+ [2m43[0m |       const orderRes = await fetch('/api/orders', {
+ [2m44[0m | 
+ [2m45[0m |   if (loading) return (<div className="min-h-screen bg-[#F8F7F5]"><BuyerSidebar /><div className="lg:ml-[260px] p-6 text-center py-12 text-[#6B7280]">Yukleniyor...</div></div>)
+    : [31;1m               ^^^^^^[0m
+ [2m46[0m |   if (!rfq) return (<div className="min-h-screen bg-[#F8F7F5]"><BuyerSidebar /><div className="lg:ml-[260px] p-6 text-center py-12 text-[#6B7280]">Talep bulunamadi</div></div>)
+ [2m47[0m | 
+ [2m48[0m |   return (
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/alici/panel/rfq/[id]/page.tsx
+
+./app/satici/panel/rfqlar/page.tsx
+Error: 
+  [31mx[0m Unexpected token `< (jsx tag start)`. Expected yield, an identifier, [ or {
+    ,-[[36;1;4mC:\Users\alibe\Desktop\mobilya\app\satici\panel\rfqlar\page.tsx[0m:39:1]
+ [2m39[0m |         body: JSON.stringify({ price: quotePrice, deliveryTime: quoteDelivery, notes: quoteNotes }),
+ [2m40[0m | 
+ [2m41[0m |   return (
+ [2m42[0m |     <div className="min-h-screen bg-[#F4F6F8]">
+    : [31;1m    ^[0m
+ [2m43[0m |       <Sidebar />
+ [2m44[0m |       <div className="lg:ml-[260px] p-6 space-y-6">
+ [2m45[0m |         <div className="flex items-center justify-between">
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/satici/panel/rfqlar/page.tsx
+
+
+> Build failed because of webpack errors
